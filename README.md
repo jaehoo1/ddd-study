@@ -1,6 +1,16 @@
 # DDD(Domain Driven Design) 개념 이해하기
 DDD라는 개념이 조금 낮설어 개념 이해를 위한 self 스터디
 
+## DDD - Domain Driven Design
+비즈니스 Domain별로 나누어 설계하는 방식이다.  
+DDD는 Strategic Design과 Tactical Design으로 나눌 수 있다. Strategic Design은 개념 설계이고 Tactical Design은 프로그래밍하기 위한 구체적 설계라고 할 수 있다.
+
+### DDD의 핵심 목표
+DDD의 핵심 목표는 "Loosly coupling", "High cohesion"이다.  
+(어플리케이션 또는 그 안의 모듈간의 의존성은 최소화하고, 응집성은 최대화)
+
+<br/>
+
 ## 왜 DDD가 필요한가? (DDD의 핵심 목적)
 1. **복잡한 비즈니스 로직을 잘 설계하고 유지보수하기 위해**
 - 실무에서는 UI보다는 **비즈니스 규칙(도메인 로직)** 이 더 복잡한 경우가 많음
@@ -80,3 +90,6 @@ DDD라는 개념이 조금 낮설어 개념 이해를 위한 self 스터디
   - 예: `Order`, `PaymentStatus`, `CancelPolicy` 같은 클래스/필드명
 - 혼동되는 용어는 제거하고 하나로 통일
   - '취소', '삭제', '무효'가 같은 의미라면, 하나로 통일 (예: '취소')
+
+## References
+- https://happycloud-lee.tistory.com/94
