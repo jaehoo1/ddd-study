@@ -1,6 +1,12 @@
 # DDD(Domain Driven Design) 개념 이해하기
 DDD라는 개념이 조금 낮설어 개념 이해를 위한 self 스터디
 
+## Domain
+- 사전적 의미는 '영역', '집합'
+- DDD에서의 Domain : **비즈니스 Domain**
+- 비즈니스 Domain : **유사한 업무의 집합** (상품, 주문, 정산, 대금, 물류, ...)
+- 어플리케이션은 비즈니스 Domain별로 나누어 설계 및 개발 될 수 있다.
+
 ## DDD - Domain Driven Design
 비즈니스 Domain별로 나누어 설계하는 방식이다.  
 DDD는 Strategic Design과 Tactical Design으로 나눌 수 있다. Strategic Design은 개념 설계이고 Tactical Design은 프로그래밍하기 위한 구체적 설계라고 할 수 있다.
