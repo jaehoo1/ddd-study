@@ -9,11 +9,19 @@ DDD라는 개념이 조금 낮설어 개념 이해를 위한 self 스터디
 
 ## DDD - Domain Driven Design
 비즈니스 Domain별로 나누어 설계하는 방식이다.  
-DDD는 Strategic Design과 Tactical Design으로 나눌 수 있다. Strategic Design은 개념 설계이고 Tactical Design은 프로그래밍하기 위한 구체적 설계라고 할 수 있다.
+DDD는 [Strategic Design](#strategic-design)과 Tactical Design으로 나눌 수 있다. Strategic Design은 개념 설계이고 Tactical Design은 프로그래밍하기 위한 구체적 설계라고 할 수 있다.
 
 ### DDD의 핵심 목표
 DDD의 핵심 목표는 "Loosly coupling", "High cohesion"이다.  
 (어플리케이션 또는 그 안의 모듈간의 의존성은 최소화하고, 응집성은 최대화)
+
+### Strategic Design
+Business Domain의 상황(Context: 대상사용자, 상황)에 맞게 설계하자는 컨셉
+- 전략적 설계를 위해 Business Domain의 상황(Context)을 Event Storming으로 공유하고, 비즈니스 목적별로 서비스들을 그룹핑한다.
+- Bounded Context & Domain Model
+- Bounded Context & Micro Service : 1개의 Bounded Context는 최소한 1개 이상의 Micro Service로 구성된다.
+- Context Map : Bounded Context간의 관계를 나타낸 도식화한 Diagram이다.
+- [Ubiquitous Language](#ubiquitous-language유비쿼터스-언어)
 
 <br/>
 
