@@ -18,10 +18,49 @@ DDD의 핵심 목표는 "Loosly coupling", "High cohesion"이다.
 ### Strategic Design
 Business Domain의 상황(Context: 대상사용자, 상황)에 맞게 설계하자는 컨셉
 - 전략적 설계를 위해 Business Domain의 상황(Context)을 Event Storming으로 공유하고, 비즈니스 목적별로 서비스들을 그룹핑한다.
-- Bounded Context & Domain Model
+- [Bounded Context](#bounded-context) & Domain Model
 - Bounded Context & Micro Service : 1개의 Bounded Context는 최소한 1개 이상의 Micro Service로 구성된다.
 - Context Map : Bounded Context간의 관계를 나타낸 도식화한 Diagram이다.
 - [Ubiquitous Language](#ubiquitous-language유비쿼터스-언어)
+
+#### Bounded Context
+Biz Domain의 사용자, 프로세스, 정책/규정 등을 고유한 비즈니스 목적별로 그룹핑 한 것  
+- 사용자, 프로세스, 정책/규정들을 그 Biz Domain의 Context라고 말할 수 있으므로 Bounded Context는 Domain안의 서비스를 경계 지은 Context의 집합이라고 할 수 있다.
+- 도메인을 기능이나 목적에 따라 명확하게 구분하여 책임과 의미가 충돌하지 않도록 하는 개념
+- 하나의 시스템에서도 여러 개의 Bounded Context가 존재할 수 있으며, 각 Context는 자체적인 모델, 용어, 규칙을 가진다.
+
+ex) E-Commerce Bounded Context
+1. 주문(Order) Context  
+주문 생성, 장바구니, 결제(Payment) 처리 등 주문 관련 도메인을 담당하는 Bounded Context
+2. 상품(Product) Context  
+상품 정보 관리, 재고, 카테고리, 리뷰 등 담당하는 Bounded Context
+3. 물류(Logistics) / 배송(Shipping) Context  
+출고, 송장, 택배사 연동, 재고, ... 담당하는 Bounded Context
+4. ...
+
+주문 Context는 상품 Context나 물류 Context와는 **별도로 관리**된다.  
+예를 들어 주문 Context에서는 "상품의 이름과 가격"만 필요하지만, 상품 Context에서는 카테고리, 상품 리뷰 등도 관리한다. 두 Context 간의 통신은 도메인 이벤트나 API 호출 등을 통해 이루어질 수 있다.
+> "상품의 이름과 가격"을 상품 RDBMS의 PK라고 표현하지 않은 이유는, DDD는 비즈니스 관점에서 도메인을 모델링 하는 것이지, 개발자들만이 모델링 하는게 아니다.
+
+> 주문 Context에 포함된 결제(Payment) 같은 경우는 주문 Context에 포함될 수도, 완전히 독립된 Bounded Context로 분리될 수도 있다. → 정답이 있는 게 아니라 "설계의 선택"이다.  
+> 1. 결제가 주문 Context 안에 포함된 경우
+> - 결제가 단순할 때 (ex. 한 가지 PG사, 결제 방식도 간단)
+> - 결제 상태 변화가 주문의 부가적인 상태 정도로만 필요할 때 : `Order` 엔터티 안에 `paymentStatus`, `paymentMethod`, `paidAt` 같은 속성 포함. `OrderService.payOrder()`
+> - 조직상 주문/결제를 동일한 팀이 관리할 때
+> - 장점 : 설계가 단순함, 의존성 없이 빠르게 구현 가능
+> - 단점 : 추후 PG 연동, 다양한 결제 수단 추가 시 복잡해짐, 재사용성 떨어짐 (ex : 구독 결제 시스템 등 다른 영역에서 활용 어려움)
+> 2. 결제를 별도 Bounded Context로 분리한 경우
+> - 결제가 복잡할 때 (PG 연동, 환불/승인 취소, 무통장 입금 등)
+> - 결제를 다른 도메인에서도 활용할 때 (예: 정기 결제, 멤버십 결제)
+> - 결제 도메인 전담팀이 있을 때 (조직 경계와도 일치)
+> - Order는 "결제 요청 이벤트"를 발행 → 결제 Context는 이를 받아 실제 결제 처리, 결제 결과 이벤트를 다시 발행 → Order는 해당 이벤트를 구독해서 상태를 업데이트
+> - 장점 : 복잡한 결제 로직을 독립적으로 관리 가능, Order 외의 도메인에서도 재사용 가능, 마이크로서비스화 용이
+> - 단점 : 컨텍스트 간 통신(이벤트, API 등) 필요, 구현 복잡도 증가
+>
+> 초기에는 결제를 주문 Context 안에 포함시켰다가, 시스템이 커지거나 결제가 복잡해지면 분리하는 방식도 괜찮다.  
+> 이 때 중요한 건, 명확한 경계를 인식하고 분리 가능한 구조로 만들어 두는 것이다(확장 가능성).
+
+이렇게 Context들을 역할과 책임에 따라 경계(Bounded) 지어 독립적으로 설계하는 것이 DDD에서 핵심이다.
 
 <br/>
 
